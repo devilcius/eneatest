@@ -1,7 +1,7 @@
 {
   "test": {
     "id": "autognosis-eneagrama-9",
-    "name": "Test AutoGnosis del Eneagrama de los 9 tipos de personalidad",
+    "name": "Test del Eneagrama de los 9 tipos de personalidad",
     "source_pdf": "test-auto-gnosis.pdf",
     "language": "es",
     "scale": {
