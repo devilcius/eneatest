@@ -5,6 +5,7 @@ function HomePage({ definition, activeItemCount }) {
     <div className="panel hero">
       <div>
         <p className="eyebrow">ENEATest · Demo local</p>
+        <img className="hero-logo" src="/img/eneatest.svg" alt="ENEATest logo" />
         <h1>{definition.name}</h1>
         <p className="lede">
           Administra usuarios, genera enlaces únicos y completa el cuestionario de 9 tipos. Esta
