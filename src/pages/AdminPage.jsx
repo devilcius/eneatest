@@ -8,21 +8,22 @@ function AdminPage({
   definition,
   users,
   sessions,
+  loading,
+  error,
   onCreateUser,
   onCreateSession,
-  onOpenSession,
   onRevokeSession,
   onResetSession,
-  onOverrideChange,
+  onUpdateItem,
   formatDateTime,
 }) {
   const [adminTab, setAdminTab] = useState('users')
   const [newUser, setNewUser] = useState({ externalId: '', displayName: '', email: '' })
   const [notice, setNotice] = useState('')
 
-  const handleCreateUser = (event) => {
+  const handleCreateUser = async (event) => {
     event.preventDefault()
-    const result = onCreateUser(newUser)
+    const result = await onCreateUser(newUser)
     setNotice(result.message)
     if (result.ok) {
       setNewUser({ externalId: '', displayName: '', email: '' })
@@ -56,8 +57,10 @@ function AdminPage({
       </div>
 
       {notice && <div className="notice">{notice}</div>}
+      {error && <div className="notice">{error}</div>}
+      {loading && <p className="muted">Cargando datos...</p>}
 
-      {adminTab === 'users' && (
+      {!loading && adminTab === 'users' && (
         <UsersTab
           users={users}
           newUser={newUser}
@@ -67,19 +70,18 @@ function AdminPage({
         />
       )}
 
-      {adminTab === 'sessions' && (
+      {!loading && adminTab === 'sessions' && (
         <SessionsTab
           sessions={sessions}
           users={users}
-          onOpenSession={(token) => onOpenSession(token)}
           onRevoke={onRevokeSession}
           onReset={onResetSession}
           formatDateTime={formatDateTime}
         />
       )}
 
-      {adminTab === 'items' && (
-        <ItemsTab definition={definition} onOverrideChange={onOverrideChange} />
+      {!loading && adminTab === 'items' && definition && (
+        <ItemsTab definition={definition} onUpdateItem={onUpdateItem} />
       )}
 
       <div className="actions" style={{ marginTop: '2rem' }}>

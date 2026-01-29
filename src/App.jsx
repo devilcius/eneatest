@@ -1,32 +1,28 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import './App.css'
-import { TEST, TEST_VERSION } from './data/testDefinition'
-import { applyOverrides } from './utils/definition'
+import { TEST } from './data/testDefinition'
 import { formatDateTime } from './utils/format'
-import { nextId } from './utils/id'
-import { navigateTo, parseHash } from './utils/router'
-import { computeRanking, computeTotals, getActiveItemCount, hasAllAnswers } from './utils/scoring'
-import { loadJSON, saveJSON } from './utils/storage'
-import { generateToken } from './utils/token'
+import { parseHash } from './utils/router'
 import TopBar from './components/TopBar'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
 import AdminPage from './pages/AdminPage'
 import PublicTestPage from './pages/PublicTestPage'
-
-const STORAGE_KEYS = {
-  users: 'eneatest_users',
-  sessions: 'eneatest_sessions',
-  responses: 'eneatest_responses',
-  overrides: 'eneatest_item_overrides',
-}
+import { api } from './api/client'
 
 function App() {
   const [route, setRoute] = useState(parseHash)
-  const [users, setUsers] = useState(() => loadJSON(STORAGE_KEYS.users, []))
-  const [sessions, setSessions] = useState(() => loadJSON(STORAGE_KEYS.sessions, []))
-  const [responses, setResponses] = useState(() => loadJSON(STORAGE_KEYS.responses, []))
-  const [overrides, setOverrides] = useState(() => loadJSON(STORAGE_KEYS.overrides, {}))
+
+  const [adminUsers, setAdminUsers] = useState([])
+  const [adminSessions, setAdminSessions] = useState([])
+  const [adminTest, setAdminTest] = useState(null)
+  const [adminLoading, setAdminLoading] = useState(false)
+  const [adminError, setAdminError] = useState('')
+
+  const [publicData, setPublicData] = useState(null)
+  const [publicLoading, setPublicLoading] = useState(false)
+  const [publicError, setPublicError] = useState('')
+  const [answers, setAnswers] = useState({})
 
   useEffect(() => {
     const onHashChange = () => setRoute(parseHash())
@@ -34,212 +30,204 @@ function App() {
     return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
 
-  useEffect(() => saveJSON(STORAGE_KEYS.users, users), [users])
-  useEffect(() => saveJSON(STORAGE_KEYS.sessions, sessions), [sessions])
-  useEffect(() => saveJSON(STORAGE_KEYS.responses, responses), [responses])
-  useEffect(() => saveJSON(STORAGE_KEYS.overrides, overrides), [overrides])
+  const loadAdminData = useCallback(async () => {
+    setAdminLoading(true)
+    setAdminError('')
+    try {
+      const [users, sessions, test] = await Promise.all([
+        api.getUsers(),
+        api.getSessions(),
+        api.getTest(),
+      ])
+      setAdminUsers(users)
+      setAdminSessions(sessions)
+      setAdminTest(test)
+    } catch (error) {
+      setAdminError(error.message ?? 'No se pudo cargar el panel de administración.')
+    } finally {
+      setAdminLoading(false)
+    }
+  }, [])
 
-  const definition = useMemo(() => applyOverrides(TEST, overrides), [overrides])
-
-  const sessionsByToken = useMemo(() => {
-    const map = new Map()
-    sessions.forEach((session) => map.set(session.token, session))
-    return map
-  }, [sessions])
+  const loadPublicSession = useCallback(async (token) => {
+    if (!token) return
+    setPublicLoading(true)
+    setPublicError('')
+    setAnswers({})
+    try {
+      const data = await api.getPublicSession(token)
+      setPublicData(data)
+    } catch (error) {
+      setPublicError(error.message ?? 'No se pudo cargar la sesión.')
+      setPublicData(null)
+    } finally {
+      setPublicLoading(false)
+    }
+  }, [])
 
   useEffect(() => {
-    if (route.page !== 'test' || route.token !== 'demo') return
-    if (sessionsByToken.has('demo')) return
-    const demoUserId = users.find((user) => user.externalId === 'DEMO')?.id ?? nextId(users)
-    if (!users.some((user) => user.externalId === 'DEMO')) {
-      setUsers((prev) => [
-        ...prev,
-        {
-          id: demoUserId,
-          externalId: 'DEMO',
-          displayName: 'Usuario Demo',
-          email: null,
-          createdAt: new Date().toISOString(),
-        },
-      ])
+    if (route.page === 'admin') {
+      loadAdminData()
     }
-    setSessions((prev) => [
-      ...prev,
-      {
-        id: nextId(prev),
-        testDefinitionId: definition.id,
-        testDefinitionVersion: TEST_VERSION,
-        userId: demoUserId,
-        token: 'demo',
-        status: 'CREATED',
-        createdAt: new Date().toISOString(),
-        startedAt: null,
-        completedAt: null,
-        revokedAt: null,
-        result: null,
-      },
-    ])
-  }, [route.page, route.token, sessionsByToken, users, definition.id])
+  }, [route.page, loadAdminData])
 
-  const createUser = (payload) => {
-    const trimmedId = payload.externalId.trim()
-    const trimmedName = payload.displayName.trim()
-    if (!trimmedId || !trimmedName) {
-      return { ok: false, message: 'Completa el identificador externo y el nombre.' }
+  useEffect(() => {
+    if (route.page === 'test') {
+      loadPublicSession(route.token)
     }
-    if (users.some((user) => user.externalId === trimmedId)) {
-      return { ok: false, message: 'Ese identificador externo ya existe.' }
+  }, [route.page, route.token, loadPublicSession])
+
+  const createUser = async (payload) => {
+    try {
+      const user = await api.createUser(payload)
+      setAdminUsers((prev) => [user, ...prev])
+      return { ok: true, message: 'Usuario creado.' }
+    } catch (error) {
+      return { ok: false, message: error.message }
     }
-    const created = {
-      id: nextId(users),
-      externalId: trimmedId,
-      displayName: trimmedName,
-      email: payload.email.trim() || null,
-      createdAt: new Date().toISOString(),
-    }
-    setUsers((prev) => [...prev, created])
-    return { ok: true, message: 'Usuario creado.' }
   }
 
   const createSession = async (userId) => {
-    const token = generateToken()
-    const created = {
-      id: nextId(sessions),
-      testDefinitionId: definition.id,
-      testDefinitionVersion: TEST_VERSION,
-      userId,
-      token,
-      status: 'CREATED',
-      createdAt: new Date().toISOString(),
-      startedAt: null,
-      completedAt: null,
-      revokedAt: null,
-      result: null,
-    }
-    setSessions((prev) => [...prev, created])
-    const link = `${window.location.origin}${window.location.pathname}#/t/${token}`
     try {
-      await navigator.clipboard.writeText(link)
-      return { ok: true, message: 'Enlace copiado al portapapeles.' }
+      const session = await api.createSession(userId)
+      setAdminSessions((prev) => [session, ...prev])
+      const link = `${window.location.origin}${window.location.pathname}#/t/${session.token}`
+      try {
+        await navigator.clipboard.writeText(link)
+        return { ok: true, message: 'Enlace copiado al portapapeles.' }
+      } catch (error) {
+        return { ok: true, message: 'Enlace creado. No se pudo copiar automáticamente.' }
+      }
     } catch (error) {
-      return { ok: true, message: 'Enlace creado. No se pudo copiar automáticamente.' }
+      return { ok: false, message: error.message }
     }
   }
 
-  const updateSession = (sessionId, updater) => {
-    setSessions((prev) => prev.map((session) => (session.id === sessionId ? updater(session) : session)))
-  }
-
-  const revokeSession = (sessionId) => {
-    updateSession(sessionId, (session) => ({
-      ...session,
-      status: 'REVOKED',
-      revokedAt: new Date().toISOString(),
-    }))
-  }
-
-  const resetSession = (sessionId) => {
-    updateSession(sessionId, (session) => ({
-      ...session,
-      status: 'CREATED',
-      startedAt: null,
-      completedAt: null,
-      revokedAt: null,
-      result: null,
-    }))
-    setResponses((prev) => prev.filter((entry) => entry.sessionId !== sessionId))
-  }
-
-  const handleAnswerChange = (sessionId, itemId, value) => {
-    const parsedValue = Number(value)
-    setResponses((prev) => {
-      const existing = prev.find((entry) => entry.sessionId === sessionId)
-      const updatedAnswers = {
-        ...(existing?.answers ?? {}),
-        [itemId]: parsedValue,
-      }
-      if (existing) {
-        return prev.map((entry) =>
-          entry.sessionId === sessionId ? { ...entry, answers: updatedAnswers } : entry
+  const handleRevokeSession = async (sessionId) => {
+    try {
+      await api.revokeSession(sessionId)
+      setAdminSessions((prev) =>
+        prev.map((session) =>
+          session.id === sessionId ? { ...session, status: 'REVOKED' } : session
         )
-      }
-      return [...prev, { sessionId, answers: updatedAnswers }]
-    })
-    updateSession(sessionId, (session) =>
-      session.status === 'CREATED'
-        ? { ...session, status: 'STARTED', startedAt: new Date().toISOString() }
-        : session
-    )
-  }
-
-  const submitSession = (sessionId) => {
-    const responseEntry = responses.find((entry) => entry.sessionId === sessionId)
-    const answers = responseEntry?.answers ?? {}
-    if (!hasAllAnswers(definition, answers, overrides)) {
-      return { ok: false, message: 'Faltan respuestas. Contesta todos los ítems activos.' }
+      )
+    } catch (error) {
+      setAdminError(error.message)
     }
-    const totals = computeTotals(definition, answers, overrides)
-    const ranking = computeRanking(totals)
-    updateSession(sessionId, (session) => ({
-      ...session,
-      status: 'COMPLETED',
-      completedAt: new Date().toISOString(),
-      result: { totals, ranking },
-    }))
-    return { ok: true, message: 'Test enviado.' }
   }
 
-  const handleOverrideChange = (itemId, patch) => {
-    const fallbackText = TEST.questionnaires.flatMap((q) => q.items).find((item) => item.id === itemId)
-      ?.text
-    setOverrides((prev) => ({
+  const handleResetSession = async (sessionId) => {
+    try {
+      await api.resetSession(sessionId)
+      setAdminSessions((prev) =>
+        prev.map((session) =>
+          session.id === sessionId
+            ? { ...session, status: 'CREATED', startedAt: null, completedAt: null, revokedAt: null }
+            : session
+        )
+      )
+    } catch (error) {
+      setAdminError(error.message)
+    }
+  }
+
+  const handleUpdateItem = async (itemId, patch) => {
+    try {
+      const updated = await api.updateItem(itemId, patch)
+      setAdminTest((prev) => {
+        if (!prev) return prev
+        return {
+          ...prev,
+          questionnaires: prev.questionnaires.map((questionnaire) => ({
+            ...questionnaire,
+            items: questionnaire.items.map((item) =>
+              item.id === updated.id
+                ? {
+                    ...item,
+                    text: updated.text,
+                    isActive: updated.isActive,
+                  }
+                : item
+            ),
+          })),
+        }
+      })
+    } catch (error) {
+      setAdminError(error.message)
+    }
+  }
+
+  const handleAnswerChange = async (itemId, value) => {
+    const parsedValue = Number(value)
+    setAnswers((prev) => ({
       ...prev,
-      [itemId]: {
-        text: fallbackText,
-        isActive: true,
-        ...prev[itemId],
-        ...patch,
-      },
+      [itemId]: parsedValue,
     }))
+
+    if (publicData?.session?.status === 'CREATED') {
+      try {
+        await api.startSession(route.token)
+        setPublicData((prev) =>
+          prev ? { ...prev, session: { ...prev.session, status: 'STARTED' } } : prev
+        )
+      } catch (error) {
+        setPublicError(error.message)
+      }
+    }
   }
 
-  const activeItemCount = getActiveItemCount(definition, overrides)
+  const handleSubmit = async (token) => {
+    try {
+      const payload = {
+        answers: Object.entries(answers).map(([itemId, value]) => ({
+          itemId: Number(itemId),
+          value,
+        })),
+      }
+      await api.submitSession(token, payload)
+      await loadPublicSession(token)
+    } catch (error) {
+      setPublicError(error.message)
+    }
+  }
+
+  const homeDefinition = useMemo(() => TEST, [])
 
   return (
     <div className="app">
       <TopBar />
       <main>
         {route.page === 'home' && (
-          <HomePage definition={definition} activeItemCount={activeItemCount} />
+          <HomePage definition={homeDefinition} activeItemCount={homeDefinition.questionnaires.length * 20} />
         )}
         {route.page === 'admin' && (
           <AdminPage
-            definition={definition}
-            users={users}
-            sessions={sessions}
+            definition={adminTest}
+            users={adminUsers}
+            sessions={adminSessions}
+            loading={adminLoading}
+            error={adminError}
             onCreateUser={createUser}
             onCreateSession={createSession}
-            onOpenSession={(token) => navigateTo(`/t/${token}`)}
-            onRevokeSession={revokeSession}
-            onResetSession={resetSession}
-            onOverrideChange={handleOverrideChange}
+            onRevokeSession={handleRevokeSession}
+            onResetSession={handleResetSession}
+            onUpdateItem={handleUpdateItem}
             formatDateTime={formatDateTime}
           />
         )}
         {route.page === 'test' && (
           <PublicTestPage
             token={route.token}
-            definition={definition}
-            sessionsByToken={sessionsByToken}
-            responses={responses}
-            overrides={overrides}
-            activeItemCount={activeItemCount}
+            data={publicData}
+            answers={answers}
             onAnswerChange={handleAnswerChange}
-            onSubmit={submitSession}
+            onSubmit={handleSubmit}
+            loading={publicLoading}
+            error={publicError}
           />
         )}
       </main>
-      <Footer language={definition.language} />
+      <Footer language={homeDefinition.language} />
     </div>
   )
 }

@@ -1,35 +1,57 @@
-import { DEFAULT_SCALE } from '../data/testDefinition'
+import { useMemo } from 'react'
 import { navigateTo } from '../utils/router'
-import { hasAllAnswers } from '../utils/scoring'
 import { getQuestionnaireTitle } from '../utils/definition'
 
-function PublicTestPage({
-  token,
-  definition,
-  sessionsByToken,
-  responses,
-  overrides,
-  activeItemCount,
-  onAnswerChange,
-  onSubmit,
-}) {
-  const session = sessionsByToken.get(token)
-  const responseEntry = responses.find((entry) => entry.sessionId === session?.id)
-  const answers = responseEntry?.answers ?? {}
-  const answeredCount = Object.entries(answers).filter(([itemId, value]) => {
-    if (!Number.isFinite(value)) return false
-    if (overrides[itemId]?.isActive === false) return false
-    return true
-  }).length
+function PublicTestPage({ token, data, answers, onAnswerChange, onSubmit, loading, error }) {
+  const definition = data?.test
+  const session = data?.session
+
+  const scale = useMemo(() => {
+    if (!definition?.scale) return []
+    const labels = definition.scale.labels ?? {}
+    const values = []
+    for (let value = definition.scale.min; value <= definition.scale.max; value += 1) {
+      values.push({ value, label: labels[String(value)] ?? String(value) })
+    }
+    return values
+  }, [definition])
+
+  const activeItemCount = useMemo(() => {
+    if (!definition) return 0
+    return definition.questionnaires.reduce((count, questionnaire) => count + questionnaire.items.length, 0)
+  }, [definition])
+
+  const answeredCount = useMemo(() => {
+    return Object.values(answers).filter((value) => Number.isFinite(value)).length
+  }, [answers])
+
+  const isComplete = answeredCount >= activeItemCount && activeItemCount > 0
+
+  if (loading) {
+    return (
+      <div className="panel">
+        <p className="muted">Cargando sesión...</p>
+      </div>
+    )
+  }
+
+  if (error && !data) {
+    return (
+      <div className="panel">
+        <h2>Enlace inválido</h2>
+        <p className="muted">{error}</p>
+        <button className="ghost" onClick={() => navigateTo('/admin')}>
+          Volver al panel
+        </button>
+      </div>
+    )
+  }
 
   if (!session) {
     return (
       <div className="panel">
         <h2>Enlace inválido</h2>
         <p className="muted">No encontramos una sesión activa para este token.</p>
-        <button className="ghost" onClick={() => navigateTo('/admin')}>
-          Volver al panel
-        </button>
       </div>
     )
   }
@@ -60,7 +82,7 @@ function PublicTestPage({
           <div className="card">
             <h3>Totales por tipo</h3>
             <div className="totals">
-              {Object.entries(session.result?.totals ?? {}).map(([eneatype, score]) => (
+              {Object.entries(data?.result?.totals ?? {}).map(([eneatype, score]) => (
                 <div key={eneatype} className="total-row">
                   <span>Tipo {eneatype}</span>
                   <strong>{score}</strong>
@@ -71,7 +93,7 @@ function PublicTestPage({
           <div className="card">
             <h3>Ranking</h3>
             <ol>
-              {(session.result?.ranking ?? []).map((entry) => (
+              {(data?.result?.ranking ?? []).map((entry) => (
                 <li key={entry.eneatype}>
                   Tipo {entry.eneatype} · {entry.score} puntos
                 </li>
@@ -85,13 +107,14 @@ function PublicTestPage({
 
   return (
     <div className="panel">
+      {error && <div className="notice">{error}</div>}
       <div className="section-header">
         <div>
           <p className="eyebrow">Cuestionario</p>
-          <h2>{definition.name}</h2>
+          <h2>{definition?.name}</h2>
           <p className="muted">
-            Responde todas las afirmaciones con un valor entre {definition.scale.min} y
-            {definition.scale.max}.
+            Responde todas las afirmaciones con un valor entre {definition?.scale?.min} y
+            {definition?.scale?.max}.
           </p>
         </div>
         <div className="progress">
@@ -105,7 +128,7 @@ function PublicTestPage({
       </div>
 
       <div className="scale">
-        {DEFAULT_SCALE.map((entry) => (
+        {scale.map((entry) => (
           <div key={entry.value}>
             <strong>{entry.value}</strong>
             <span>{entry.label}</span>
@@ -114,47 +137,39 @@ function PublicTestPage({
       </div>
 
       <div className="questionnaires">
-        {definition.questionnaires.map((questionnaire) => (
+        {definition?.questionnaires?.map((questionnaire) => (
           <section key={questionnaire.id} className="questionnaire">
             <header>
               <h3>{getQuestionnaireTitle(questionnaire)}</h3>
               <span className="tag">Tipo {questionnaire.eneatype}</span>
             </header>
             <div className="items">
-              {questionnaire.items
-                .filter((item) => item.isActive)
-                .map((item) => (
-                  <div key={item.id} className="item">
-                    <p>{item.text}</p>
-                    <div className="choices">
-                      {DEFAULT_SCALE.map((entry) => (
-                        <label key={entry.value}>
-                          <input
-                            type="radio"
-                            name={`item-${item.id}`}
-                            value={entry.value}
-                            checked={answers[item.id] === entry.value}
-                            onChange={(event) =>
-                              onAnswerChange(session.id, item.id, event.target.value)
-                            }
-                          />
-                          <span>{entry.value}</span>
-                        </label>
-                      ))}
-                    </div>
+              {questionnaire.items.map((item) => (
+                <div key={item.id} className="item">
+                  <p>{item.text}</p>
+                  <div className="choices">
+                    {scale.map((entry) => (
+                      <label key={entry.value}>
+                        <input
+                          type="radio"
+                          name={`item-${item.id}`}
+                          value={entry.value}
+                          checked={answers[item.id] === entry.value}
+                          onChange={(event) => onAnswerChange(item.id, event.target.value)}
+                        />
+                        <span>{entry.value}</span>
+                      </label>
+                    ))}
                   </div>
-                ))}
+                </div>
+              ))}
             </div>
           </section>
         ))}
       </div>
 
       <div className="submit-row">
-        <button
-          className="primary"
-          onClick={() => onSubmit(session.id)}
-          disabled={!hasAllAnswers(definition, answers, overrides)}
-        >
+        <button className="primary" onClick={() => onSubmit(token)} disabled={!isComplete}>
           Enviar respuestas
         </button>
       </div>

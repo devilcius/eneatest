@@ -24,11 +24,12 @@ CREATE TABLE IF NOT EXISTS test_definition (
 CREATE TABLE IF NOT EXISTS questionnaire (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   test_definition_id TEXT NOT NULL,
+  test_definition_version INTEGER NOT NULL,
   eneatype INTEGER NOT NULL,
   title TEXT NOT NULL,
   order_index INTEGER NOT NULL,
   created_at TEXT NOT NULL,
-  UNIQUE (test_definition_id, eneatype),
+  UNIQUE (test_definition_id, test_definition_version, eneatype),
   FOREIGN KEY (test_definition_id) REFERENCES test_definition(id)
 );
 
@@ -80,7 +81,7 @@ CREATE TABLE IF NOT EXISTS session_result (
 );
 
 CREATE INDEX IF NOT EXISTS idx_test_definition_active ON test_definition(is_active);
-CREATE INDEX IF NOT EXISTS idx_questionnaire_test_definition ON questionnaire(test_definition_id);
+CREATE INDEX IF NOT EXISTS idx_questionnaire_test_definition ON questionnaire(test_definition_id, test_definition_version);
 CREATE INDEX IF NOT EXISTS idx_item_questionnaire ON item(questionnaire_id);
 CREATE INDEX IF NOT EXISTS idx_session_user ON test_session(user_id);
 CREATE INDEX IF NOT EXISTS idx_response_session ON item_response(session_id);

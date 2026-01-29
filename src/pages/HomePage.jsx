@@ -8,8 +8,8 @@ function HomePage({ definition, activeItemCount }) {
         <img className="hero-logo" src="/img/eneatest.svg" alt="ENEATest logo" />
         <h1>{definition.name}</h1>
         <p className="lede">
-          Administra usuarios, genera enlaces únicos y completa el cuestionario de 9 tipos. Esta
-          versión funciona sin backend y guarda datos en tu navegador.
+          Administra usuarios, genera enlaces únicos y completa el cuestionario de 9 tipos. Los
+          datos se gestionan mediante Cloudflare Pages Functions y D1.
         </p>
         <div className="actions">
           <button className="primary" onClick={() => navigateTo('/admin')}>

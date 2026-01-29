@@ -1,4 +1,4 @@
-function SessionsTab({ sessions, users, onOpenSession, onRevoke, onReset, formatDateTime }) {
+function SessionsTab({ sessions, users, onRevoke, onReset, formatDateTime }) {
   return (
     <div className="card">
       <h3>Sesiones</h3>
@@ -11,11 +11,12 @@ function SessionsTab({ sessions, users, onOpenSession, onRevoke, onReset, format
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map((session) => {
               const user = users.find((entry) => entry.id === session.userId)
+              const displayName = user?.displayName ?? session.displayName ?? 'Usuario'
               return (
                 <div key={session.id} className="table-row">
                   <div>
-                    <strong>{user?.displayName ?? 'Usuario'}</strong>
-                    <div className="muted">Token: {session.token.slice(0, 8)}…</div>
+                    <strong>{displayName}</strong>
+                    <div className="muted">Sesión #{session.id}</div>
                     <div className="muted">Estado: {session.status}</div>
                     <div className="muted">Creada: {formatDateTime(session.createdAt)}</div>
                     {session.completedAt && (
@@ -23,9 +24,6 @@ function SessionsTab({ sessions, users, onOpenSession, onRevoke, onReset, format
                     )}
                   </div>
                   <div className="row-actions">
-                    <button className="ghost" onClick={() => onOpenSession(session.token)}>
-                      Abrir
-                    </button>
                     {session.status !== 'REVOKED' && session.status !== 'COMPLETED' && (
                       <button className="ghost" onClick={() => onRevoke(session.id)}>
                         Revocar

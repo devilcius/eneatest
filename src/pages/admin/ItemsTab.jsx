@@ -1,6 +1,6 @@
 import { getQuestionnaireTitle } from '../../utils/definition'
 
-function ItemsTab({ definition, onOverrideChange }) {
+function ItemsTab({ definition, onUpdateItem }) {
   return (
     <div className="card">
       <h3>Editor de ítems</h3>
@@ -17,14 +17,14 @@ function ItemsTab({ definition, onOverrideChange }) {
                     <input
                       type="checkbox"
                       checked={item.isActive}
-                      onChange={(event) => onOverrideChange(item.id, { isActive: event.target.checked })}
+                      onChange={(event) => onUpdateItem(item.id, { isActive: event.target.checked })}
                     />
                     <span>{item.isActive ? 'Activo' : 'Inactivo'}</span>
                   </label>
                 </div>
                 <textarea
                   value={item.text}
-                  onChange={(event) => onOverrideChange(item.id, { text: event.target.value })}
+                  onChange={(event) => onUpdateItem(item.id, { text: event.target.value })}
                   rows={3}
                 />
               </div>
