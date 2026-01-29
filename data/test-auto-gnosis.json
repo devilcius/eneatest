@@ -1,0 +1,811 @@
+{
+  "test": {
+    "id": "autognosis-eneagrama-9",
+    "name": "Test AutoGnosis del Eneagrama de los 9 tipos de personalidad",
+    "source_pdf": "test-auto-gnosis.pdf",
+    "language": "es",
+    "scale": {
+      "min": 0,
+      "max": 5,
+      "labels": {
+        "0": "No, Nunca",
+        "1": "Rara vez",
+        "2": "Alguna vez",
+        "3": "Varias veces",
+        "4": "Generalmente",
+        "5": "Sí, Muy cierto"
+      }
+    },
+    "structure": {
+      "questionnaires": 9,
+      "items_per_questionnaire": 20,
+      "scoring": "sum_per_questionnaire"
+    },
+    "questionnaires": [
+      {
+        "id": 1,
+        "title": "Cuestionario 1",
+        "eneatype": 1,
+        "items": [
+          {
+            "id": "1.1",
+            "text": "Para ser una persona correcta creo hay que evitar cometer errores siendo preciso y moralmente íntegro (¡Y hacer las cosas como Dios manda!)"
+          },
+          {
+            "id": "1.2",
+            "text": "Me enfada mucho que la gente no se dé cuenta que hace las cosas mal"
+          },
+          {
+            "id": "1.3",
+            "text": "Me sorprendo que no vean las cosas tan claras como yo las veo"
+          },
+          {
+            "id": "1.4",
+            "text": "Sinceramente, muchas veces pienso que tengo razón porque tengo un fuerte sentido de cómo deberían ser las cosas"
+          },
+          {
+            "id": "1.5",
+            "text": "Si cada uno hiciera lo que tiene que hacer este mundo no sería tan imperfecto"
+          },
+          {
+            "id": "1.6",
+            "text": "La gente debe cumplir con sus responsabilidades, primero el deber, después el placer"
+          },
+          {
+            "id": "1.7",
+            "text": "La integridad consiste en ser congruente con lo que se dice y se hace. En la vida hay que ir con la verdad por delante, la mentira solo lleva al dolor. Si es posible hacer las cosas bien, seamos serios y hagamos las cosas bien. Hay una gran diferencia entre hacer las cosas de forma mediocre y hacerlas bien"
+          },
+          {
+            "id": "1.8",
+            "text": "No me gusta enfadarme, ¡y mira que me aguanto! pero al final siempre hay algo que está mal o alguien hace algo que me hace enfadar"
+          },
+          {
+            "id": "1.9",
+            "text": "Generalmente he sido una persona disciplinada, bien organizada y puntual"
+          },
+          {
+            "id": "1.10",
+            "text": "Muchas veces pienso que si la gente fuera más responsable, previsora, sincera, precisa, seria y organizada no se equivocaría tanto"
+          },
+          {
+            "id": "1.11",
+            "text": "Me cuesta aceptar a las personas incívicas que tienen valores morales tan bajos"
+          },
+          {
+            "id": "1.12",
+            "text": "No me gusta cometer errores. Me considero una persona precisa, atenta y minuciosa"
+          },
+          {
+            "id": "1.13",
+            "text": "La gente confía en mí porque sabe que hago las cosas bien y a tiempo."
+          },
+          {
+            "id": "1.14",
+            "text": "He tenido que esforzarme muchas veces por mantenerme sereno, callarme y no perder el control cuando he visto que alguien hace las cosas mal"
+          },
+          {
+            "id": "1.15",
+            "text": "Me gusta ser una persona seria, sensata, precisa, objetiva y racional. Desde niño me di cuenta de que yo veía la realidad con mucha más claridad que el resto de las personas. Tengo firmes convicciones y al final suelo tener razón"
+          },
+          {
+            "id": "1.16",
+            "text": "A veces me ven severo y rígido, pero no se puede transigir cuando las cosas se hacen mal. Hay que ir siempre con la verdad por delante, aunque sea la dura verdad."
+          },
+          {
+            "id": "1.17",
+            "text": "El amor sincero no depende de las manifestaciones emotivas. Creo firmemente que obras son amores y no buenas razones"
+          },
+          {
+            "id": "1.18",
+            "text": "Suelo darme cuenta rápidamente de los errores de la gente, a veces intento aconsejarles a los demás para que hagan bien las cosas y no se equivoquen"
+          },
+          {
+            "id": "1.19",
+            "text": "Aunque por fuera pueda parecer riguroso, serio y frío, en mi interior escondo profundos sentimientos que muchas personas ignoran que tengo. Reconozco que tiendo a exigirme mucho a mí mismo. A veces he sido demasiado serio y estricto conmigo mismo."
+          },
+          {
+            "id": "1.20",
+            "text": "Suelo prever las equivocaciones de las personas. Intento avisarles de lo que les ocurrirá si no siguen mis consejos. Al final, muchas veces tengo razón."
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Cuestionario 2",
+        "eneatype": 2,
+        "items": [
+          {
+            "id": "2.1",
+            "text": "Quiero a la gente y me encanta que me quieran. Creo que no hay nada más importante en la vida que el amor y la ayuda a los demás."
+          },
+          {
+            "id": "2.2",
+            "text": "Mi interés genuino en las personas que quiero hace que comparta sus ilusiones, sueños, necesidades y esperanzas"
+          },
+          {
+            "id": "2.3",
+            "text": "Me encanta que las personas se acerquen a mí y me pidan consejo."
+          },
+          {
+            "id": "2.4",
+            "text": "Reconozco que me cuesta mucho pedir lo que necesito."
+          },
+          {
+            "id": "2.5",
+            "text": "Las personas que me conocen me han valorado por mi generosidad, mi silenciosa fortaleza y mi capacidad de dar amor."
+          },
+          {
+            "id": "2.6",
+            "text": "Cuando me implico emocionalmente con alguien me olvido de mí. Es como si estuviera más preocupado por sus necesidades y por sus problemas que por los míos."
+          },
+          {
+            "id": "2.7",
+            "text": "Intento ser diplomático, sensible y atento a las opiniones de los demás. En público nunca critico, ni llevo la contraria, ni juzgo las opiniones delante de más gente"
+          },
+          {
+            "id": "2.8",
+            "text": "Suelo saber sintonizar y adaptarme a las personas porque sé ponerme en su lugar, adivino cómo son, qué necesitan y cómo hacer que se sientan bien."
+          },
+          {
+            "id": "2.9",
+            "text": "Las personas suelen decirme que se sienten bien conmigo porque sé escuchar y porque les hago sentirse aceptados cuando me comparten su intimidad."
+          },
+          {
+            "id": "2.10",
+            "text": "Dedicarme tanto a mis relaciones me ha agotado emocionalmente. Me sorprendo cómo cambia mi vida dependiendo de las personas con las que estoy."
+          },
+          {
+            "id": "2.11",
+            "text": "Soy una persona acogedora, es muy importante para mí que en mi casa o en una reunión social todo el mundo se sienta cómodo, alegre, bienvenido e integrado"
+          },
+          {
+            "id": "2.12",
+            "text": "Soy muy entregado y empático con las personas que me interesan, pero cuando siento que esa persona no me aporta le resto importancia y me olvido de ella"
+          },
+          {
+            "id": "2.13",
+            "text": "A veces mis familiares se sorprenden de mis reacciones de rabia cuando siento que no tienen en cuenta mis sentimientos, porque yo sí estoy atento a los suyos"
+          },
+          {
+            "id": "2.14",
+            "text": "Suelo decir palabras de apoyo incluso cuando no me lo piden"
+          },
+          {
+            "id": "2.15",
+            "text": "Me encanta sentirme conectado/a y próximo a las personas que me interesan, hablar de nuestra vida personal, de relaciones, compartir emociones y sentir intimidad."
+          },
+          {
+            "id": "2.16",
+            "text": "Me gusta dar cumplidos sinceros a los demás, decir lo bueno que tienen las personas y confesar a las personas queridas lo importantes que son para mí."
+          },
+          {
+            "id": "2.17",
+            "text": "Me gusta ser una persona fuerte, ayudadora y entregada a las personas que quiero; pero también tengo un lado sensual, atrevido y seductor:"
+          },
+          {
+            "id": "2.18",
+            "text": "Muchas veces me preocupo más de los demás que de mí mismo; y me molesta ver que los demás no se preocupan por mí tanto como yo de ellos"
+          },
+          {
+            "id": "2.19",
+            "text": "Me cuesta mucho decir que NO cuando alguien me pide algo. Siento que generalmente he dado más en mis relaciones de lo que he recibido"
+          },
+          {
+            "id": "2.20",
+            "text": "Creo sinceramente que si me lo propongo sé cómo gustarle a cualquier persona, porque sé cómo adaptarme de manera natural a sus necesidades y su forma de ser"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Cuestionario 3",
+        "eneatype": 3,
+        "items": [
+          {
+            "id": "3.1",
+            "text": "Me considero una persona eficaz y competente. ¡Me gusta trabajar a pleno rendimiento hasta que termino una meta! Y una vez logrado un objetivo... ¡voy a por el siguiente!"
+          },
+          {
+            "id": "3.2",
+            "text": "Creo que todas las personas tendrían que esforzarse para sacar su máximo potencial. Yo siempre he buscado la manera de sacar mi máximo rendimiento."
+          },
+          {
+            "id": "3.3",
+            "text": "Solo tenemos una ocasión de crear una buena impresión. ¡La imagen es muy importante! Por eso estoy especialmente atento a cómo me muestro ante los demás"
+          },
+          {
+            "id": "3.4",
+            "text": "Me gusta que las personas sepan a qué me dedico y conozcan mis resultados y éxitos"
+          },
+          {
+            "id": "3.5",
+            "text": "Me suelen decir que siempre estoy ocupado. Reconozco que soy un poco hiperactivo. ¡Me encanta sentirme productivo, que no paro y que llevo mi vida al siguiente nivel!"
+          },
+          {
+            "id": "3.6",
+            "text": "Soy una persona orientada a objetivos, me gusta medir los resultados de mis proyectos y sentir que evoluciono y tengo éxitos a nivel personal y profesional."
+          },
+          {
+            "id": "3.7",
+            "text": "Reconozco que tengo un talento especial para lograr que las personas me valoren, sientan interés y admiración hacia mi. Me he encontrado con gente que me envidia."
+          },
+          {
+            "id": "3.8",
+            "text": "Me cuesta vivir sin objetivos, no encuentro sentido a no hacer nada. Me gusta realizarme: proponerme metas y lograrlas. Eso sí que me hace sentir pleno."
+          },
+          {
+            "id": "3.9",
+            "text": "En el fondo siento vergüenza si los demás descubren mis inseguridades. Por eso intento dar siempre una buena impresión y mostrar lo mejor de mí mismo."
+          },
+          {
+            "id": "3.10",
+            "text": "En general, me siento satisfecho conmigo mismo. Y tengo una alta autoestima."
+          },
+          {
+            "id": "3.11",
+            "text": "Me gusta ser como soy y confío en mí mismo. Aunque pase por malos momentos, logro reponerme rápidamente y lanzarme de lleno a la próxima meta."
+          },
+          {
+            "id": "3.12",
+            "text": "A veces me cuesta conectar con mis sentimientos... y cuando me bloqueo y no sé muy bien lo que siento, lo que suelo hacer es ponerme a trabajar y estar activo."
+          },
+          {
+            "id": "3.13",
+            "text": "Reconozco que me gusta que me valoren. Me gusta sentirme que soy mejor que todos los demás en lo que hago."
+          },
+          {
+            "id": "3.14",
+            "text": "Pienso que lo más importante en la vida es tener éxito, resultados y lograr las metas que uno se propone."
+          },
+          {
+            "id": "3.15",
+            "text": "Trabajo muy duro porque creo que creo que los resultados en la vida demuestran el valor de una persona (tener buenos resultados académicos, éxito profesional...)"
+          },
+          {
+            "id": "3.16",
+            "text": "Por supuesto que me molesta que la gente no reconozca la excelencia con la que hago las cosas. Pienso que soy mejor de lo que la gente cree que soy."
+          },
+          {
+            "id": "3.17",
+            "text": "Suelo esforzarme al máximo por ser el mejor en lo que hago. Es muy importante para mí sentir que tengo éxito en lo que estoy haciendo. No me permito el fracaso."
+          },
+          {
+            "id": "3.18",
+            "text": "Soy una persona muy motivada y motivadora, siempre intento animar a los demás a que saquen lo mejor de sí mismos, a que evolucionen y se desarrollen."
+          },
+          {
+            "id": "3.19",
+            "text": "Me considero una persona competente, capaz de poner las cosas en marcha, capaz de motivar a las personas y capaz de adaptarme a las situaciones."
+          },
+          {
+            "id": "3.20",
+            "text": "Mi estilo de vida, mis valores y mis objetivos han cambiado varias veces a lo largo de mi vida. Me he reinventado a mí mismo ante la adversidad."
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Cuestionario 4",
+        "eneatype": 4,
+        "items": [
+          {
+            "id": "4.1",
+            "text": "La gente no suele llegar a la profundidad de sentimientos que yo experimento."
+          },
+          {
+            "id": "4.2",
+            "text": "Muchas veces me he preguntado por qué los demás parecen más felices que yo y les va mejor que a mí, si en realidad llevan vidas muy normalitas, casi mediocres."
+          },
+          {
+            "id": "4.3",
+            "text": "Sufro al pensar que me falta algo, que me he perdido algo, que no se me ha dado lo que se me tendría que haber dado (amor verdadero, más atención y comprensión, una oportunidad o una educación especial para haber desarrollado todo mi potencial...)"
+          },
+          {
+            "id": "4.4",
+            "text": "Pienso que la mayoría de la gente es poco profunda y falsa; intento relacionarme solo con personas verdaderas y auténticas, aunque puedan parecer diferentes o raras."
+          },
+          {
+            "id": "4.5",
+            "text": "Suelo tener momentos de melancolía por pensar que tendría que haberme ocurrido algo que no ha sucedido; entonces me evado, me meto en mi mundo interior y me imagino un universo paralelo donde pasan cosas fantásticas que desearía estar viviendo..."
+          },
+          {
+            "id": "4.6",
+            "text": "Vivo un mundo interior tan cambiante y profundo que he dedicado mucho tiempo a averiguar qué es lo que mis sentimientos tienen que decirme."
+          },
+          {
+            "id": "4.7",
+            "text": "Cuando me encuentro mal conmigo mismo tiendo a buscar dentro de mí qué es lo que no funciona. Soy el mayor crítico conmigo mismo, pero no soporto que me critiquen."
+          },
+          {
+            "id": "4.8",
+            "text": "Una vida sin pasión ni fuertes emociones no merece la pena ser vivida."
+          },
+          {
+            "id": "4.9",
+            "text": "Cuando he pasado épocas de mi vida deprimido, secretamente he pensado que en última instancia me queda el suicidio como salida para terminar con el dolor."
+          },
+          {
+            "id": "4.10",
+            "text": "Me he sentido muy identificado con la princesa del cuento que espera al príncipe azul para que me saque del sufrimiento, la superficialidad y la mediocridad."
+          },
+          {
+            "id": "4.11",
+            "text": "A veces creo que mi universo de emociones es tan grande que solo las personas profundas que tienen intereses artísticos y creativos son capaces de entenderme."
+          },
+          {
+            "id": "4.12",
+            "text": "Aunque intento aparentar a los demás que estoy sereno y tranquilo por dentro vivo fuertes cambios emocionales; nadie puede imaginar todas las cosas que siento."
+          },
+          {
+            "id": "4.13",
+            "text": "Me gustaría entenderme a mi mismo: unas veces me encanta como soy, otras veces me avergüenzo de quién soy... ¡Quiero que me valoren, pero cuando lo hacen no me lo creo!"
+          },
+          {
+            "id": "4.14",
+            "text": "Cualquier cosa puede herir mi sensibilidad. Una palabra, un tono de voz o gesto, cualquier mínimo feo detalle puede desencadenar dolorosas emociones en mí."
+          },
+          {
+            "id": "4.15",
+            "text": "Desde niño me he sentido diferente a los demás. Me gustaría poder encontrar en mi el valor auténtico que yo tengo. Creo que mi vida es una constante búsqueda de quién soy"
+          },
+          {
+            "id": "4.16",
+            "text": "Reconozco que soy un poco montaña rusa emocional: unas veces estoy arriba y me siento una persona guay, diferente y genial; otras veces caigo abajo y me deprimo pensando que en realidad valgo muy poco y me siento como una mierda sin autoestima."
+          },
+          {
+            "id": "4.17",
+            "text": "Lo más importante de la vida es realizarse a sí mismo y encontrar el amor verdadero"
+          },
+          {
+            "id": "4.18",
+            "text": "Me atormenta quedarme tanto tiempo rumiando mis problemas; me cuesta deshacerme de ellos. ¿Por qué los demás parece que llevan vidas tan estables y despreocupadas?"
+          },
+          {
+            "id": "4.19",
+            "text": "Es posible que la mayor parte de mis problemas con los demás provengan de lo susceptible e hipersensible que soy. Me tomo las cosas de manera muy personal."
+          },
+          {
+            "id": "4.20",
+            "text": "En mi interior me siento muy vulnerable, temo mucho el abandono y el rechazo."
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Cuestionario 5",
+        "eneatype": 5,
+        "items": [
+          {
+            "id": "5.1",
+            "text": "Siempre he pensado que el conocimiento me dará seguridad. Es necesario saber mucho para estar preparado en este mundo."
+          },
+          {
+            "id": "5.2",
+            "text": "No soy un «relaciones públicas»; en realidad soy una persona reservada, un poco tímida, y no dejo entrar a muchas personas en mi espacio íntimo y personal."
+          },
+          {
+            "id": "5.3",
+            "text": "Me gusta llegar al fondo de las cuestiones. Cuando me pongo a investigar algo, profundizo en ello y estudio cada detalle hasta que siento haberlo entendido todo"
+          },
+          {
+            "id": "5.4",
+            "text": "No me siento muy fuerte ni poderoso. Más bien, en mi interior me siento pequeño, vulnerable y frágil. Pero sé que soy inteligente y tengo buena intuición"
+          },
+          {
+            "id": "5.5",
+            "text": "Suelen decirme que debería tener más vida social y llamar más a mis amigos."
+          },
+          {
+            "id": "5.6",
+            "text": "Cuando estoy con personas de confianza y el tema de conversación me interesa soy muy hablador. Pero si no, suelo quedarme callado observando."
+          },
+          {
+            "id": "5.7",
+            "text": "Me cuesta entablar relaciones de confianza y nunca me he visto con demasiadas habilidades sociales. Rara vez he sido demasiado expresivo emocionalmente."
+          },
+          {
+            "id": "5.8",
+            "text": "Creo que es necesario mantener cierta distancia con las emociones y con las personas, me agobio mucho cuando los demás invaden mi tiempo y mi espacio."
+          },
+          {
+            "id": "5.9",
+            "text": "Puedo pasar perfectamente mucho tiempo solo. Me encantan mis momentos de soledad y tranquilidad. Creo que el valor de la introspección está menospreciado."
+          },
+          {
+            "id": "5.10",
+            "text": "Me cuesta abrirme socialmente, pero cuando lo he hecho la gente se ha sorprendido de mi sentido del humor inteligente."
+          },
+          {
+            "id": "5.11",
+            "text": "Antes de hablar y opinar sobre algo me gusta estar muy bien informado."
+          },
+          {
+            "id": "5.12",
+            "text": "Normalmente he intentado depender de los demás lo menos posible y preservar mi intimidad e independencia emocional."
+          },
+          {
+            "id": "5.13",
+            "text": "Siempre he tenido muchas inquietudes intelectuales. Soy un poco investigador. Me gusta cuestionar lo que parecen y lo que verdaderamente son las cosas."
+          },
+          {
+            "id": "5.14",
+            "text": "Mi estilo de vida es más bien sobrio y austero. No me gusta malgastar el dinero."
+          },
+          {
+            "id": "5.15",
+            "text": "Muchas veces me han dicho que soy solitario, incluso cuando estoy físicamente al lado de las personas a veces sienten que mantengo cierta distancia con ellos."
+          },
+          {
+            "id": "5.16",
+            "text": "Me cuesta expresar verbalmente mis sentimientos delante de las personas. Pero cuando estoy a solas puedo conectar con mis sentimientos más profundamente."
+          },
+          {
+            "id": "5.17",
+            "text": "Reconozco que a veces no soy todo lo generoso que debería serlo con los demás. Pero en realidad, yo tampoco pido nada a nadie."
+          },
+          {
+            "id": "5.18",
+            "text": "Intento evitar demasiados encuentros sociales. Aguanto poco estar rodeado de mucha gente. Prefiero estar solo o con personas que conozco bien."
+          },
+          {
+            "id": "5.19",
+            "text": "Ante la presión de los demás me he vuelto un poco huidizo y desapegado. En muchos momentos prefiero habitar en mi propio y pequeño mundo."
+          },
+          {
+            "id": "5.20",
+            "text": "Soy una persona muy curiosa, me encanta investigar, aprender y saber muchas cosas. ¡En algunos temas me gustaría ser todo un experto!"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Cuestionario 6",
+        "eneatype": 6,
+        "items": [
+          {
+            "id": "6.1",
+            "text": "Para mí es muy importante ser una persona fiel, comprometida y de confianza."
+          },
+          {
+            "id": "6.2",
+            "text": "Suelo ser muy cauto e intento estar preparado ante cualquier problema que pueda suceder. Aunque reconozco que suelo obsesionarme con la seguridad."
+          },
+          {
+            "id": "6.3",
+            "text": "Para mi la lealtad es el valor más importante en las relaciones. He de confiar al 100% en alguien, porque con un 1% de duda ya no estoy seguro y empiezo a desconfiar de él"
+          },
+          {
+            "id": "6.4",
+            "text": "He de reconocer que normalmente no he confiado mucho en mí mismo, y ante otras personas a veces doy la impresión de ser inseguro o dubitativo."
+          },
+          {
+            "id": "6.5",
+            "text": "Tiendo a demorar la toma de decisiones cuando no veo con claridad las consecuencias de las cosas. Me cuesta un tiempo arrancar hasta que por fin tomo la iniciativa."
+          },
+          {
+            "id": "6.6",
+            "text": "A veces los demás pueden verme dudoso, pero en realidad soy una persona prudente porque tiendo a analizar mucho los futuros problemas que puede acarrear una decisión."
+          },
+          {
+            "id": "6.7",
+            "text": "Me cuesta vivir tranquilo, en paz y sin preocupaciones. Me cuesta relajarme incluso cuando no hay motivo. Vivo en un estado constante de anticipación de problemas."
+          },
+          {
+            "id": "6.8",
+            "text": "Me siento bien haciendo lo que se espera de mí con la persona a quien admiro. Soy como decía el poema del Mío Cid: ¡Qué buen vasallo sería si tuviera un buen señor!"
+          },
+          {
+            "id": "6.9",
+            "text": "Soy más eficaz y me siento mejor cuando hago cosas para los demás que para mi mismo. Soy muy buen colaborador y ayudador con las personas a las que aprecio."
+          },
+          {
+            "id": "6.10",
+            "text": "Soy una persona muy simpática y amable. Pero reconozco que cuando me enfado tengo explosiones que, aunque duran poco tiempo, dejo a los demás sorprendidos."
+          },
+          {
+            "id": "6.11",
+            "text": "Los demás pueden verme al principio como una persona escéptica; pero es que necesito conocer bien a las personas y comprender las situaciones antes de poder relajarme"
+          },
+          {
+            "id": "6.12",
+            "text": "Lo más importante para mi es que los demás me vean como una persona digna de confianza. Me asusta pensar que la gente pueda pensar que no soy alguien de fiar"
+          },
+          {
+            "id": "6.13",
+            "text": "Muchas veces he temido sentirme solo y abandonado ante el futuro."
+          },
+          {
+            "id": "6.14",
+            "text": "Estoy siempre alerta ante el peligro. Es como si estuviera en permanente preocupación por los posibles problemas que pudieran suceder."
+          },
+          {
+            "id": "6.15",
+            "text": "Me encantaría que existiera un manual de reglas correctas, buenas normas, pautas claras y métodos específicos para saber hacerlo todo bien."
+          },
+          {
+            "id": "6.16",
+            "text": "He de reconocer que pocos han sido los momentos o épocas en mi vida en los que he estado completamente relajado y sin pensar demasiado en qué sucederá en el futuro"
+          },
+          {
+            "id": "6.17",
+            "text": "Me gusta tener a mi alrededor un entorno seguro. Cuando tengo que tomar decisiones sobre el futuro pienso mucho porque quiero saber lo que va a suceder."
+          },
+          {
+            "id": "6.18",
+            "text": "La lealtad y el poder confiar en los demás es el valor social más importante."
+          },
+          {
+            "id": "6.19",
+            "text": "Creo que me «rayo» mucho y le doy muchas vueltas a las cosas. Ansiedad» podría ser mi segundo apellido, ya pienso mucho en los posibles problemas del futuro"
+          },
+          {
+            "id": "6.20",
+            "text": "Puedo pasar de ser muy escéptico –no fiarme de lo que dice la gente– a muy inocente. Es muy extraño."
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Cuestionario 7",
+        "eneatype": 7,
+        "items": [
+          {
+            "id": "7.1",
+            "text": "Generalmente la gente me ve como una persona alegre, optimista y entusiasta, que me disperso yendo de un lado a otro; pero esa es la imagen superficial que doy, porque por dentro también sufro y me siento muy responsable de los demás."
+          },
+          {
+            "id": "7.2",
+            "text": "Me agobia tener que hacer cosas que no me gustan porque tengo mucha curiosidad, ¡hay tantas cosas por hacer y tan poco tiempo para vivirlo todo!"
+          },
+          {
+            "id": "7.3",
+            "text": "Mi mente siempre está activa. Suelo pensar y hacer varias cosas a la vez. Suelo pasar de hacer una tarea a otra. Raramente mi mente está quieta sin hacer nada."
+          },
+          {
+            "id": "7.4",
+            "text": "Cuando pienso en el futuro muchas veces no veo claro qué va a pasar. No quiero equivocarme porque sufro cuando me siento atrapado en algo que no he elegido."
+          },
+          {
+            "id": "7.5",
+            "text": "Generalmente las personas me caen bien y suelo pensar bien de los demás."
+          },
+          {
+            "id": "7.6",
+            "text": "Me encanta crear nuevas ideas, y entusiasmar con mis planes a los demás."
+          },
+          {
+            "id": "7.7",
+            "text": "Los demás me consideran una persona extrovertida, abierta y divertida, aunque esa es mi cara social, porque por dentro soy más tímida y no cuento a nadie mis problemas"
+          },
+          {
+            "id": "7.8",
+            "text": "No me gusta que me coarten mi libertad ni mi independencia. Necesito que me dejen mi espacio. No me gusta que me juzguen ni que tomen decisiones por mi."
+          },
+          {
+            "id": "7.9",
+            "text": "Mi mente no para de pensar y de estar activa, ¡a veces es un torbellino! Puedo estar pensando 10 cosas diferentes al mismo tiempo."
+          },
+          {
+            "id": "7.10",
+            "text": "Me encanta sentir el entusiasmo de descubrir cosas e iniciar proyectos nuevos."
+          },
+          {
+            "id": "7.11",
+            "text": "¡Me encanta imaginar lo que voy a hacer en los próximos días! Aunque me gusta ver espacios libres en la agenda siempre acabo llenándola de cosas por hacer."
+          },
+          {
+            "id": "7.12",
+            "text": "Muchas veces me han dicho que soy distraído y que me disperso con facilidad. Pero la realidad es que mi mente está pensando y haciendo varias cosas a la vez."
+          },
+          {
+            "id": "7.13",
+            "text": "Durante mi vida he hecho muchas actividades diferentes, pero una vez terminada una cosa paso a hacer otra porque siento que ya no hay nada más interesante que descubrir."
+          },
+          {
+            "id": "7.14",
+            "text": "He tendido a gastar más dinero del que probablemente debería... Aunque tengo mucho cuidado de no quedarme en números rojos. ¡Me da mucho miedo quedarme a 0 euros!"
+          },
+          {
+            "id": "7.15",
+            "text": "Me encanta estar con gente... pero quiero sentirme libre para poder elegir. No soporto que los demás planifiquen mi vida, me den órdenes o hagan planes sin consultarme."
+          },
+          {
+            "id": "7.16",
+            "text": "Tengo muchos planes para hacer, aunque no suelo pensar dónde estaré dentro de 10 años. Prefiero tener abiertas las opciones y poder elegir hacia dónde quiero ir."
+          },
+          {
+            "id": "7.17",
+            "text": "Por fuera puedo parecer una persona dispersa y un viva la virgen porque voy de un lado a otro, pero también tengo un lado serio: me gusta hacer las cosas bien y tengo un alto sentido de la moralidad, la justicia, el compromiso verdadero y la responsabilidad."
+          },
+          {
+            "id": "7.18",
+            "text": "¡Me interesa casi todo y me encanta aprender sobre muchos temas diferentes!"
+          },
+          {
+            "id": "7.19",
+            "text": "Odio sentirme atrapado entre tener que elegir hacer lo que yo quiero o hacer lo que quieren los demás de mí. Siento mucho cargo de conciencia porque quiero que todos estén bien; pero también siento agobio y rabia porque quiero hacer lo que a mi me gusta."
+          },
+          {
+            "id": "7.20",
+            "text": "Me da mucha pena ver personas tristes o desmotivadas, intento que se alegren un poco y que vean el lado bueno de las cosas. Me afecta mucho el ánimo de los demás."
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Cuestionario 8",
+        "eneatype": 8,
+        "items": [
+          {
+            "id": "8.1",
+            "text": "Me considero una persona fuerte. En muchas ocasiones otras personas han dependido de mi resistencia, de mi capacidad de tomar decisiones difíciles y de pasar a la acción"
+          },
+          {
+            "id": "8.2",
+            "text": "Cuando he tenido que enfrentarme con alguien, reconozco que con frecuencia he sido demasiado directo y duro. A menudo tengo que contener mucho mi agresividad."
+          },
+          {
+            "id": "8.3",
+            "text": "Aunque por fuera doy una imagen de persona dura, dentro tengo un lado tierno, sensible y sentimental que no suelo mostrar. Hay una bella interna dentro de mi bestia externa"
+          },
+          {
+            "id": "8.4",
+            "text": "Desde niño he sido una persona que se ha fortalecido y se ha hecho a sí misma."
+          },
+          {
+            "id": "8.5",
+            "text": "Creo que lo más importante en la vida es confiar en uno mismo y tirar hacia delante. Generalmente he confiado solo en mí mismo cuando aparecen los problemas."
+          },
+          {
+            "id": "8.6",
+            "text": "A veces tiendo a ser dominante, controlador y exigente. A veces esto me ha ocasionado problemas con la gente. Me suelen echar en cara que presiono y mando demasiado."
+          },
+          {
+            "id": "8.7",
+            "text": "Nunca he agachado la cabeza ante una situación conflictiva con otra persona."
+          },
+          {
+            "id": "8.8",
+            "text": "Cuando las situaciones se han puesto «calientes» me he lanzado a afrontarlas directamente, aunque sea haciéndolo yo solo. Mirar hacia otro lado es de cobardes."
+          },
+          {
+            "id": "8.9",
+            "text": "A veces he irritado y he hecho llorar a los demás por ser demasiado agresivo."
+          },
+          {
+            "id": "8.10",
+            "text": "Me gusta cuidar de mi gente. Cuando quiero a las personas siento la necesidad de protegerles y de procurar que estén bien. Siempre me he sentido un poco padre o madre"
+          },
+          {
+            "id": "8.11",
+            "text": "No me callo la boca. Cuando enfada algo se lo digo a la cara a la gente."
+          },
+          {
+            "id": "8.12",
+            "text": "Desde siempre me he sentido como un «pilar de fortaleza y valor». Muchas veces he tenido que ir a ayudar los demás a sacarles de sus problemas."
+          },
+          {
+            "id": "8.13",
+            "text": "Es importante hacerse respetar. Muchas veces tengo que mostrar un «perfil duro» y dejar claro que «no estoy para tonterías»."
+          },
+          {
+            "id": "8.14",
+            "text": "No me han dado miedo las situaciones difíciles; incluso me han gustado las situaciones de alta tensión; me gustan los retos y que me reten para sentirme capaz, que yo puedo"
+          },
+          {
+            "id": "8.15",
+            "text": "No siento ninguna compasión por los cobardes ni por los flojos de carácter; pero sí siento necesidad de luchar por proteger a los inocentes."
+          },
+          {
+            "id": "8.16",
+            "text": "Tengo una fuerte voluntad; pocas cosas me dan miedo y me echan para atrás."
+          },
+          {
+            "id": "8.17",
+            "text": "Soy una persona que siempre ha tirado hacia delante con todo."
+          },
+          {
+            "id": "8.18",
+            "text": "Una de las cosas que me hace sentir más orgulloso es ver valerse por su cuenta a una persona que ha estado bajo mi tutoría o protección; que se ha hecho fuerte y valiente."
+          },
+          {
+            "id": "8.19",
+            "text": "Me ha gustado siempre ese lado mío desafiador y empoderador, saco a las personas de su zona de confort para que descubran todo lo que son capaces de hacer."
+          },
+          {
+            "id": "8.20",
+            "text": "Hay momentos en los que vivo violentos estallidos de cólera, pero se me pasan al poco tiempo. La gente se queda paralizada cuando me ve tan agresivo Me gusta sentirme vivo cuando hago algo que otros creen difícil o imposible. Me gusta sentir que controlo mi vida y mi mundo, que nada ni nadie me limite ni pueda conmigo."
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Cuestionario 9",
+        "eneatype": 9,
+        "items": [
+          {
+            "id": "9.1",
+            "text": "Me considero una persona pacífica, suelo vivir siempre tranquilo y despreocupado. Creo que es importante mantener siempre la calma, la estabilidad y la paz mental"
+          },
+          {
+            "id": "9.2",
+            "text": "Me gusta que las cosas sigan como están, sin estresarme. No entiendo cómo la gente se complica tanto la vida ¡Con lo bien que se está viviendo con tranquilidad!"
+          },
+          {
+            "id": "9.3",
+            "text": "Hakuna Matata” es mi filosofía de vida: ‘vive sin preocupación”. Porque si algo tiene solución ¿para qué preocuparse? Y si no tiene solución, ¿Para qué preocuparse?"
+          },
+          {
+            "id": "9.4",
+            "text": "Desde siempre he sido una persona tranquila y estable emocionalmente; me suelo sentir en calma, con una suave corriente de energía fluyendo armoniosamente en mi interior."
+          },
+          {
+            "id": "9.5",
+            "text": "Me veo a mi mismo como una persona optimista, tranquila y despreocupada."
+          },
+          {
+            "id": "9.6",
+            "text": "Me sorprende que la gente se centre tanto en lo negativo y se preocupe tanto por los problemas, cuando hay tantas cosas bonitas en la vida."
+          },
+          {
+            "id": "9.7",
+            "text": "Me gusta llevarme bien con los demás. Prefiero no imponerme a la gente y me siento cómodo si otra persona toma el mando y se hace cargo de la situación."
+          },
+          {
+            "id": "9.8",
+            "text": "Soy positivo. Siempre he tendido a pensar que las cosas al final saldrán bien."
+          },
+          {
+            "id": "9.9",
+            "text": "No me gusta presionar ni sentirme presionado por nadie. Por las buenas conmigo se consigue todo, por las malas nada; cuanto más me atacan más resistencia pasiva muestro."
+          },
+          {
+            "id": "9.10",
+            "text": "Cuando la gente discute conmigo, suelo evitar responder; les escucho pero intento no empeorar el conflicto"
+          },
+          {
+            "id": "9.11",
+            "text": "En ocasiones me han llamado porque me dicen que soy pasivo, estoy en mi mundo y se me pasa el tiempo sin darme cuenta"
+          },
+          {
+            "id": "9.12",
+            "text": "Creo que funciono por inercias: cuando trabajo, trabajo mucho y cuando estoy descansando, se me pasa el tiempo sin enterarme. Me cuesta cambiar de estado."
+          },
+          {
+            "id": "9.13",
+            "text": "La gente que me ve por fuera piensa que estoy tranquilo, pero por dentro contengo mi enfado e intento disimular para que no se me vea. Pocas veces me han visto enfadado"
+          },
+          {
+            "id": "9.14",
+            "text": "Me gusta trabajar a mi ritmo tranquilo, sin estrés ni presión, voy sin prisa pero sin pausa. Me cuesta activarme, pero cuando me pongo a trabajar, trabajo mucho"
+          },
+          {
+            "id": "9.15",
+            "text": "Me dicen que soy bastante testarudo, pero es que no soporto cuando alguien me intenta empujar y me dice lo que tengo que hacer o no hacer"
+          },
+          {
+            "id": "9.16",
+            "text": "Me gusta tener relaciones estables, tranquilas, buenas, armoniosas con los demás. Me siento muy unido a todos."
+          },
+          {
+            "id": "9.17",
+            "text": "La gente suele venir a mi a contarme sus problemas porque sienten que escucho con paciencia sin juzgar; dicen que les transmito paz y armonía; se sienten a gusto a mi lado"
+          },
+          {
+            "id": "9.18",
+            "text": "Me gusta saber que voy a tener tiempo para relajarme todos los días; cuando tengo mis tiempos de calma siempre encuentro cosas para entretenerme."
+          },
+          {
+            "id": "9.19",
+            "text": "Reconozco que se me pasa el tiempo sin enterarme. Si no dispongo de un horario y una rutina diaria puedo pasar el día dando vueltas sin haber hecho nada productivo."
+          },
+          {
+            "id": "9.20",
+            "text": "Sé lo que quiero, pero cuando me preguntan me cuesta mucho trabajo definirlo"
+          }
+        ]
+      }
+    ],
+    "generated_at": "2026-01-27T20:39:23Z"
+  }
+}
