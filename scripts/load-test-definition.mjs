@@ -25,6 +25,8 @@ const versionArg = getArg('--version')
 const isActivate = hasFlag('--activate')
 const isForce = hasFlag('--force')
 const isLocal = hasFlag('--local')
+const isRemote = hasFlag('--remote')
+const dumpSqlPath = getArg('--dump-sql')
 
 if (useWrangler && !dbName) {
   console.error('Missing --db-name for wrangler mode')
@@ -319,7 +321,8 @@ const getNextVersionWrangler = (versionOverride) => {
 
 const runWrangler = (wranglerArgs, input) => {
   const argsWithLocal = isLocal ? [...wranglerArgs, '--local'] : wranglerArgs
-  const result = spawnSync('npx', ['wrangler', ...argsWithLocal], {
+  const finalArgs = isRemote ? [...argsWithLocal, '--remote'] : argsWithLocal
+  const result = spawnSync('npx', ['wrangler', ...finalArgs], {
     input,
     encoding: 'utf-8',
   })
@@ -336,11 +339,16 @@ if (useWrangler) {
   const nextVersion = getNextVersionWrangler(versionArg ? Number(versionArg) : null)
   const version = isForce ? nextVersion - 1 || 1 : nextVersion
   const sql = buildSql(version, false)
-  const tmpFile = path.join(process.cwd(), '.tmp-load-test.sql')
+  const tmpFile = dumpSqlPath ? path.resolve(dumpSqlPath) : path.join(process.cwd(), '.tmp-load-test.sql')
   await fs.writeFile(tmpFile, sql, 'utf-8')
   runWrangler(['d1', 'execute', dbName, '--file', tmpFile])
-  await fs.unlink(tmpFile)
+  if (!dumpSqlPath) {
+    await fs.unlink(tmpFile)
+  }
   console.log(`Loaded test definition ${test.id} v${version} via wrangler.`)
+  if (dumpSqlPath) {
+    console.log(`SQL dump written to ${tmpFile}`)
+  }
   process.exit(0)
 }
 
