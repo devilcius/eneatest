@@ -34,6 +34,47 @@ function AdminSessionPage({ sessionDetail, testDefinition, loading, error, forma
     return tally
   }, [testDefinition, result, responseMap])
 
+  const ranking = useMemo(() => {
+    return Object.entries(totals)
+      .map(([eneatype, score]) => ({ eneatype: Number(eneatype), score }))
+      .sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score
+        return a.eneatype - b.eneatype
+      })
+  }, [totals])
+
+  const maxScore = useMemo(() => {
+    if (!ranking.length) return 1
+    return Math.max(...ranking.map((entry) => entry.score))
+  }, [ranking])
+
+  const polarData = useMemo(() => {
+    const count = ranking.length
+    if (!count) return []
+    const minRadius = 32
+    const maxRadius = 130
+    const angleStep = (Math.PI * 2) / count
+    return ranking.map((entry, index) => {
+      const ratio = maxScore ? entry.score / maxScore : 0
+      const radius = minRadius + ratio * (maxRadius - minRadius)
+      const startAngle = -Math.PI / 2 + index * angleStep
+      const endAngle = startAngle + angleStep
+      return { ...entry, radius, startAngle, endAngle }
+    })
+  }, [ranking, maxScore])
+
+  const polarPalette = [
+    '#8cc9ff',
+    '#b33a3a',
+    '#f7d63c',
+    '#f7a21b',
+    '#5aa469',
+    '#3b2f2f',
+    '#8e44ad',
+    '#2c3e50',
+    '#2ecc71',
+  ]
+
   if (loading) {
     return (
       <div className="panel">
@@ -78,25 +119,73 @@ function AdminSessionPage({ sessionDetail, testDefinition, loading, error, forma
             <p className="muted">Completada: {formatDateTime(session.completedAt)}</p>
           )}
         </div>
-        <div className="actions">
+        <div className="actions session-actions">
           <a className="ghost button-link" href="/admin">
             Volver al panel
           </a>
         </div>
       </div>
 
-      {result?.ranking && result.ranking.length > 0 && (
-        <div className="card" style={{ marginBottom: '1.5rem' }}>
-          <h3>Eneatipos</h3>
-          <ol>
-            {result.ranking.map((entry) => (
-              <li key={entry.eneatype}>
-                Tipo {entry.eneatype} · {entry.score} puntos
-              </li>
-            ))}
-          </ol>
-        </div>
-      )}
+      <div className="card" style={{ marginBottom: '1.5rem' }}>
+        {polarData.length > 0 && (
+          <div className="polar-chart">
+            <svg viewBox="0 0 360 360" role="img" aria-label="Distribución radial de puntuaciones">
+              {polarData.map((entry, index) => {
+                const cx = 180
+                const cy = 180
+                const startX = cx + entry.radius * Math.cos(entry.startAngle)
+                const startY = cy + entry.radius * Math.sin(entry.startAngle)
+                const endX = cx + entry.radius * Math.cos(entry.endAngle)
+                const endY = cy + entry.radius * Math.sin(entry.endAngle)
+                const largeArc = entry.endAngle - entry.startAngle > Math.PI ? 1 : 0
+                const path = [
+                  `M ${cx} ${cy}`,
+                  `L ${startX} ${startY}`,
+                  `A ${entry.radius} ${entry.radius} 0 ${largeArc} 1 ${endX} ${endY}`,
+                  'Z',
+                ].join(' ')
+                const labelAngle = (entry.startAngle + entry.endAngle) / 2
+                const labelRadius = entry.radius + 16
+                const labelX = cx + labelRadius * Math.cos(labelAngle)
+                const labelY = cy + labelRadius * Math.sin(labelAngle)
+                const rotate = (labelAngle * 180) / Math.PI + 90
+                return (
+                  <g key={entry.eneatype}>
+                    <path
+                      d={path}
+                      fill={polarPalette[index % polarPalette.length]}
+                      stroke="rgba(36, 26, 18, 0.4)"
+                      strokeWidth="1.5"
+                    />
+                    <text
+                      x={labelX}
+                      y={labelY}
+                      textAnchor="middle"
+                      className="polar-label"
+                      transform={`rotate(${rotate} ${labelX} ${labelY})`}
+                    >
+                      Tipo {entry.eneatype}
+                    </text>
+                  </g>
+                )
+              })}
+            </svg>
+          </div>
+        )}
+
+        {result?.ranking && result.ranking.length > 0 && (
+          <>
+            <h3>Eneatipos</h3>
+            <ol>
+              {result.ranking.map((entry) => (
+                <li key={entry.eneatype}>
+                  Tipo {entry.eneatype} · {entry.score} puntos
+                </li>
+              ))}
+            </ol>
+          </>
+        )}
+      </div>
 
       <div className="questionnaires">
         {testDefinition.questionnaires.map((questionnaire) => {
