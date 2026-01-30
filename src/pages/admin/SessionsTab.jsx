@@ -1,3 +1,10 @@
+const STATUS_LABELS = {
+  CREATED: 'Creada',
+  STARTED: 'Iniciada',
+  COMPLETED: 'Completada',
+  REVOKED: 'Revocada',
+}
+
 function SessionsTab({ sessions, users, onRevoke, onReset, formatDateTime }) {
   return (
     <div className="card">
@@ -17,7 +24,7 @@ function SessionsTab({ sessions, users, onRevoke, onReset, formatDateTime }) {
                   <div>
                     <strong>{displayName}</strong>
                     <div className="muted">Sesión #{session.id}</div>
-                    <div className="muted">Estado: {session.status}</div>
+                    <div className="muted">Estado: {STATUS_LABELS[session.status] ?? session.status}</div>
                     <div className="muted">Creada: {formatDateTime(session.createdAt)}</div>
                     {session.completedAt && (
                       <div className="muted">Completada: {formatDateTime(session.completedAt)}</div>
