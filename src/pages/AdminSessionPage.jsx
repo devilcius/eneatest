@@ -120,6 +120,9 @@ function AdminSessionPage({ sessionDetail, testDefinition, loading, error, forma
           )}
         </div>
         <div className="actions session-actions">
+          <button className="ghost print-button" onClick={() => window.print()}>
+            Exportar PDF
+          </button>
           <a className="ghost button-link" href="/admin">
             Volver al panel
           </a>
