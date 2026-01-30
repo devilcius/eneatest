@@ -21,7 +21,7 @@ export async function onRequest(context) {
   if (!user) return errorJson(404, 'User not found')
 
   const test = await getActiveTestDefinition(env.DB)
-  if (!test) return errorJson(400, 'No active test definition')
+  if (!test) return errorJson(400, 'No hay definidos tests activos')
 
   const token = generateToken()
   const tokenHash = await hashToken(token, env)

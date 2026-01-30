@@ -9,7 +9,7 @@ export async function onRequest(context) {
   }
 
   const test = await getActiveTestDefinition(env.DB)
-  if (!test) return errorJson(404, 'No active test definition')
+  if (!test) return errorJson(404, 'No hay definidos tests activos')
 
   return json(test)
 }

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import './App.css'
 import { TEST } from './data/testDefinition'
 import { formatDateTime } from './utils/format'
-import { parseHash } from './utils/router'
+import { parsePath } from './utils/router'
 import TopBar from './components/TopBar'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
@@ -11,7 +11,7 @@ import PublicTestPage from './pages/PublicTestPage'
 import { api } from './api/client'
 
 function App() {
-  const [route, setRoute] = useState(parseHash)
+  const [route, setRoute] = useState(parsePath)
 
   const [adminUsers, setAdminUsers] = useState([])
   const [adminSessions, setAdminSessions] = useState([])
@@ -25,9 +25,9 @@ function App() {
   const [answers, setAnswers] = useState({})
 
   useEffect(() => {
-    const onHashChange = () => setRoute(parseHash())
-    window.addEventListener('hashchange', onHashChange)
-    return () => window.removeEventListener('hashchange', onHashChange)
+    const onPopState = () => setRoute(parsePath())
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
   }, [])
 
   const loadAdminData = useCallback(async () => {
@@ -91,7 +91,7 @@ function App() {
     try {
       const session = await api.createSession(userId)
       setAdminSessions((prev) => [session, ...prev])
-      const link = `${window.location.origin}${window.location.pathname}#/t/${session.token}`
+      const link = `${window.location.origin}/t/${session.token}`
       try {
         await navigator.clipboard.writeText(link)
         return { ok: true, message: 'Enlace copiado al portapapeles.' }
