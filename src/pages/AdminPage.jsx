@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { navigateTo } from '../utils/router'
 import UsersTab from './admin/UsersTab'
 import SessionsTab from './admin/SessionsTab'
 import ItemsTab from './admin/ItemsTab'

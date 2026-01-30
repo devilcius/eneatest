@@ -305,6 +305,11 @@ textarea {
   gap: 0.8rem;
 }
 
+.item-score {
+  font-weight: 600;
+  color: var(--muted);
+}
+
 .choices {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));

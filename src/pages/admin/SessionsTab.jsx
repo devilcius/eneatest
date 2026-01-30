@@ -31,6 +31,11 @@ function SessionsTab({ sessions, users, onRevoke, onReset, formatDateTime }) {
                     )}
                   </div>
                   <div className="row-actions">
+                    {session.status === 'COMPLETED' && (
+                      <a className="ghost button-link" href={`/admin/sessions/${session.id}`}>
+                        Ver resultados
+                      </a>
+                    )}
                     {session.status !== 'REVOKED' && session.status !== 'COMPLETED' && (
                       <button className="ghost" onClick={() => onRevoke(session.id)}>
                         Revocar

@@ -7,6 +7,7 @@ import TopBar from './components/TopBar'
 import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
 import AdminPage from './pages/AdminPage'
+import AdminSessionPage from './pages/AdminSessionPage'
 import PublicTestPage from './pages/PublicTestPage'
 import { api } from './api/client'
 
@@ -18,6 +19,10 @@ function App() {
   const [adminTest, setAdminTest] = useState(null)
   const [adminLoading, setAdminLoading] = useState(false)
   const [adminError, setAdminError] = useState('')
+  const [adminSessionDetail, setAdminSessionDetail] = useState(null)
+  const [adminSessionTest, setAdminSessionTest] = useState(null)
+  const [adminSessionLoading, setAdminSessionLoading] = useState(false)
+  const [adminSessionError, setAdminSessionError] = useState('')
 
   const [publicData, setPublicData] = useState(null)
   const [publicLoading, setPublicLoading] = useState(false)
@@ -65,11 +70,38 @@ function App() {
     }
   }, [])
 
+  const loadAdminSessionDetail = useCallback(async (sessionId) => {
+    if (!sessionId) return
+    setAdminSessionLoading(true)
+    setAdminSessionError('')
+    try {
+      const detail = await api.getSessionDetail(sessionId)
+      setAdminSessionDetail(detail)
+      const test = await api.getTestDefinition(
+        detail.session.testDefinitionId,
+        detail.session.testDefinitionVersion
+      )
+      setAdminSessionTest(test)
+    } catch (error) {
+      setAdminSessionError(error.message ?? 'No se pudo cargar la sesión.')
+      setAdminSessionDetail(null)
+      setAdminSessionTest(null)
+    } finally {
+      setAdminSessionLoading(false)
+    }
+  }, [])
+
   useEffect(() => {
     if (route.page === 'admin') {
       loadAdminData()
     }
   }, [route.page, loadAdminData])
+
+  useEffect(() => {
+    if (route.page === 'admin-session') {
+      loadAdminSessionDetail(route.sessionId)
+    }
+  }, [route.page, route.sessionId, loadAdminSessionDetail])
 
   useEffect(() => {
     if (route.page === 'test') {
@@ -212,6 +244,15 @@ function App() {
             onRevokeSession={handleRevokeSession}
             onResetSession={handleResetSession}
             onUpdateItem={handleUpdateItem}
+            formatDateTime={formatDateTime}
+          />
+        )}
+        {route.page === 'admin-session' && (
+          <AdminSessionPage
+            sessionDetail={adminSessionDetail}
+            testDefinition={adminSessionTest}
+            loading={adminSessionLoading}
+            error={adminSessionError}
             formatDateTime={formatDateTime}
           />
         )}

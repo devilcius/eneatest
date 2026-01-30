@@ -1,5 +1,9 @@
 export const parsePath = () => {
   const path = window.location.pathname
+  if (path.startsWith('/admin/sessions/')) {
+    const sessionId = path.replace('/admin/sessions/', '').trim()
+    return { page: 'admin-session', sessionId }
+  }
   if (path.startsWith('/t/')) {
     return { page: 'test', token: path.replace('/t/', '').trim() }
   }

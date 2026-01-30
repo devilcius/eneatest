@@ -39,6 +39,7 @@ export const api = {
   },
   createSession: (userId) => request(`/api/admin/users/${userId}/session`, { method: 'POST' }),
   getTest: () => request('/api/admin/test'),
+  getTestDefinition: (id, version) => request(`/api/admin/test/${id}/${version}`),
   updateItem: (itemId, payload) =>
     request(`/api/admin/items/${itemId}`, {
       method: 'PUT',
@@ -48,6 +49,7 @@ export const api = {
     request(`/api/admin/sessions/${sessionId}/revoke`, { method: 'POST' }),
   resetSession: (sessionId) =>
     request(`/api/admin/sessions/${sessionId}/reset`, { method: 'POST' }),
+  getSessionDetail: (sessionId) => request(`/api/admin/sessions/${sessionId}`),
   getPublicSession: (token) => request(`/api/public/session/${token}`),
   startSession: (token) => request(`/api/public/session/${token}/start`, { method: 'POST' }),
   submitSession: (token, payload) =>
