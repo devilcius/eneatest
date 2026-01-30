@@ -386,20 +386,47 @@ textarea {
   gap: 0.5rem;
 }
 
-.choices label {
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  padding: 0.4rem 0.3rem;
-  border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background: white;
-  font-weight: 500;
+.segmented-group {
+  display: flex;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.8);
 }
 
-.choices input {
-  margin: 0;
+.segmented-option {
+  position: relative;
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+}
+
+.segmented-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.segmented-label {
+  display: block;
+  padding: 0.6rem 0;
+  font-weight: 600;
+  color: var(--muted);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.segmented-option + .segmented-option .segmented-label {
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.segmented-option input:checked + .segmented-label {
+  background: var(--accent);
+  color: white;
+}
+
+.segmented-option input:focus-visible + .segmented-label {
+  outline: 2px solid rgba(36, 26, 18, 0.6);
+  outline-offset: -2px;
 }
 
 .submit-row {

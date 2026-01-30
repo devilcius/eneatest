@@ -147,9 +147,9 @@ function PublicTestPage({ token, data, answers, onAnswerChange, onSubmit, loadin
               {questionnaire.items.map((item) => (
                 <div key={item.id} className="item">
                   <p>{item.text}</p>
-                  <div className="choices">
+                  <div className="choices segmented-group" role="radiogroup" aria-label={`Respuesta ${item.id}`}>
                     {scale.map((entry) => (
-                      <label key={entry.value}>
+                      <label key={entry.value} className="segmented-option">
                         <input
                           type="radio"
                           name={`item-${item.id}`}
@@ -157,7 +157,7 @@ function PublicTestPage({ token, data, answers, onAnswerChange, onSubmit, loadin
                           checked={answers[item.id] === entry.value}
                           onChange={(event) => onAnswerChange(item.id, event.target.value)}
                         />
-                        <span>{entry.value}</span>
+                        <span className="segmented-label">{entry.value}</span>
                       </label>
                     ))}
                   </div>
