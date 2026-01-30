@@ -63,9 +63,9 @@ const scaleLabelsJson = JSON.stringify(test.scale.labels ?? {})
 
 const escapeSql = (value) => String(value).replace(/'/g, "''")
 
-const buildSql = (version) => {
+const buildSql = (version, includeTransaction = true) => {
   const statements = []
-  statements.push('BEGIN;')
+  if (includeTransaction) statements.push('BEGIN;')
 
   if (isActivate) {
     statements.push(
@@ -75,22 +75,39 @@ const buildSql = (version) => {
 
   if (isForce) {
     statements.push(
-      `DELETE FROM item WHERE questionnaire_id IN (
-        SELECT id FROM questionnaire WHERE test_definition_id = '${escapeSql(test.id)}' AND test_definition_version = ${version}
+      `DELETE FROM item_response WHERE item_id IN (
+        SELECT i.id FROM item i
+        JOIN questionnaire q ON q.id = i.questionnaire_id
+        WHERE q.test_definition_id = '${escapeSql(test.id)}'
       );`
     )
     statements.push(
-      `DELETE FROM questionnaire WHERE test_definition_id = '${escapeSql(test.id)}' AND test_definition_version = ${version};`
+      `DELETE FROM item WHERE questionnaire_id IN (
+        SELECT id FROM questionnaire WHERE test_definition_id = '${escapeSql(test.id)}'
+      );`
     )
-    statements.push(
-      `DELETE FROM test_definition WHERE id = '${escapeSql(test.id)}' AND version = ${version};`
-    )
+    statements.push(`DELETE FROM questionnaire WHERE test_definition_id = '${escapeSql(test.id)}';`)
   }
+
+  statements.push(
+    `UPDATE test_definition SET
+      name = '${escapeSql(test.name)}',
+      language = '${escapeSql(test.language)}',
+      scale_min = ${test.scale.min},
+      scale_max = ${test.scale.max},
+      scale_labels_json = '${escapeSql(scaleLabelsJson)}',
+      source_pdf = ${test.source_pdf ? `'${escapeSql(test.source_pdf)}'` : 'NULL'},
+      version = ${version},
+      is_active = ${isActivate ? 1 : 0},
+      created_at = '${now}'
+    WHERE id = '${escapeSql(test.id)}';`
+  )
 
   statements.push(
     `INSERT INTO test_definition (
       id, name, language, scale_min, scale_max, scale_labels_json, source_pdf, version, is_active, created_at
-    ) VALUES (
+    )
+    SELECT
       '${escapeSql(test.id)}',
       '${escapeSql(test.name)}',
       '${escapeSql(test.language)}',
@@ -101,7 +118,7 @@ const buildSql = (version) => {
       ${version},
       ${isActivate ? 1 : 0},
       '${now}'
-    );`
+    WHERE NOT EXISTS (SELECT 1 FROM test_definition WHERE id = '${escapeSql(test.id)}');`
   )
 
   questionnaires.forEach((questionnaire) => {
@@ -134,7 +151,7 @@ const buildSql = (version) => {
     })
   })
 
-  statements.push('COMMIT;')
+  if (includeTransaction) statements.push('COMMIT;')
   return statements.join('\n')
 }
 
@@ -143,19 +160,18 @@ const loadWithSqlite = (version) => {
   db.pragma('foreign_keys = ON')
 
   const existingVersion = db
-    .prepare('SELECT MAX(version) as version FROM test_definition WHERE id = ?1')
-    .bind(test.id)
-    .get()?.version
+    .prepare('SELECT MAX(version) as version FROM test_definition WHERE id = ?')
+    .get(test.id)?.version
 
   const nextVersion = version ?? (existingVersion ? existingVersion + 1 : 1)
+  const targetVersion = isForce && existingVersion ? existingVersion : nextVersion
 
   const row = db
-    .prepare('SELECT 1 FROM test_definition WHERE id = ?1 AND version = ?2')
-    .bind(test.id, nextVersion)
-    .get()
+    .prepare('SELECT 1 FROM test_definition WHERE id = ? AND version = ?')
+    .get(test.id, targetVersion)
 
   if (row && !isForce) {
-    console.error(`Version ${nextVersion} already exists. Use --force to replace.`)
+    console.error(`Version ${targetVersion} already exists. Use --force to replace.`)
     process.exit(1)
   }
 
@@ -164,7 +180,7 @@ const loadWithSqlite = (version) => {
     INSERT INTO test_definition (
       id, name, language, scale_min, scale_max, scale_labels_json, source_pdf, version, is_active, created_at
     ) VALUES (
-      ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10
+      ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
     )
     `
   )
@@ -173,7 +189,7 @@ const loadWithSqlite = (version) => {
     `
     INSERT INTO questionnaire (
       test_definition_id, test_definition_version, eneatype, title, order_index, created_at
-    ) VALUES (?1, ?2, ?3, ?4, ?5, ?6)
+    ) VALUES (?, ?, ?, ?, ?, ?)
     `
   )
 
@@ -181,41 +197,69 @@ const loadWithSqlite = (version) => {
     `
     INSERT INTO item (
       questionnaire_id, order_index, text, is_active, created_at, updated_at
-    ) VALUES (?1, ?2, ?3, 1, ?4, ?4)
+    ) VALUES (?, ?, ?, 1, ?, ?)
     `
   )
 
-  const cleanup = db.prepare(
+  const cleanupResponses = db.prepare(
+    `
+    DELETE FROM item_response WHERE item_id IN (
+      SELECT i.id FROM item i
+      JOIN questionnaire q ON q.id = i.questionnaire_id
+      WHERE q.test_definition_id = ?
+    )
+    `
+  )
+
+  const cleanupItems = db.prepare(
     `
     DELETE FROM item WHERE questionnaire_id IN (
-      SELECT id FROM questionnaire WHERE test_definition_id = ?1 AND test_definition_version = ?2
+      SELECT id FROM questionnaire WHERE test_definition_id = ?
     )
     `
   )
 
   const deleteQuestionnaires = db.prepare(
     `
-    DELETE FROM questionnaire WHERE test_definition_id = ?1 AND test_definition_version = ?2
+    DELETE FROM questionnaire WHERE test_definition_id = ?
     `
   )
 
-  const deleteDefinition = db.prepare(
+  const deactivate = db.prepare('UPDATE test_definition SET is_active = 0 WHERE id = ?')
+  const updateDefinition = db.prepare(
     `
-    DELETE FROM test_definition WHERE id = ?1 AND version = ?2
+    UPDATE test_definition SET
+      name = ?2,
+      language = ?3,
+      scale_min = ?4,
+      scale_max = ?5,
+      scale_labels_json = ?6,
+      source_pdf = ?7,
+      version = ?8,
+      is_active = ?9,
+      created_at = ?10
+    WHERE id = ?1
     `
   )
-
-  const deactivate = db.prepare('UPDATE test_definition SET is_active = 0 WHERE id = ?1')
+  const insertDefinitionIfMissing = db.prepare(
+    `
+    INSERT INTO test_definition (
+      id, name, language, scale_min, scale_max, scale_labels_json, source_pdf, version, is_active, created_at
+    )
+    SELECT ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10
+    WHERE NOT EXISTS (SELECT 1 FROM test_definition WHERE id = ?1)
+    `
+  )
 
   const transaction = db.transaction(() => {
     if (isActivate) deactivate.run(test.id)
     if (isForce) {
-      cleanup.run(test.id, nextVersion)
-      deleteQuestionnaires.run(test.id, nextVersion)
-      deleteDefinition.run(test.id, nextVersion)
+      cleanupResponses.run(test.id)
+      cleanupItems.run(test.id)
+      deleteQuestionnaires.run(test.id)
     }
 
-    insertDefinition.run(
+    updateDefinition.run(
       test.id,
       test.name,
       test.language,
@@ -223,7 +267,19 @@ const loadWithSqlite = (version) => {
       test.scale.max,
       scaleLabelsJson,
       test.source_pdf ?? null,
-      nextVersion,
+      targetVersion,
+      isActivate ? 1 : 0,
+      now
+    )
+    insertDefinitionIfMissing.run(
+      test.id,
+      test.name,
+      test.language,
+      test.scale.min,
+      test.scale.max,
+      scaleLabelsJson,
+      test.source_pdf ?? null,
+      targetVersion,
       isActivate ? 1 : 0,
       now
     )
@@ -231,7 +287,7 @@ const loadWithSqlite = (version) => {
     questionnaires.forEach((questionnaire) => {
       const result = insertQuestionnaire.run(
         test.id,
-        nextVersion,
+        targetVersion,
         questionnaire.eneatype,
         questionnaire.title,
         questionnaire.id,
@@ -239,7 +295,7 @@ const loadWithSqlite = (version) => {
       )
       const questionnaireId = result.lastInsertRowid
       questionnaire.items.forEach((item, idx) => {
-        insertItem.run(questionnaireId, idx + 1, item.text, now)
+        insertItem.run(questionnaireId, idx + 1, item.text, now, now)
       })
     })
   })
@@ -247,7 +303,7 @@ const loadWithSqlite = (version) => {
   transaction()
   db.close()
 
-  return nextVersion
+  return targetVersion
 }
 
 const getNextVersionWrangler = (versionOverride) => {
@@ -277,8 +333,9 @@ const runWrangler = (wranglerArgs, input) => {
 }
 
 if (useWrangler) {
-  const version = getNextVersionWrangler(versionArg ? Number(versionArg) : null)
-  const sql = buildSql(version)
+  const nextVersion = getNextVersionWrangler(versionArg ? Number(versionArg) : null)
+  const version = isForce ? nextVersion - 1 || 1 : nextVersion
+  const sql = buildSql(version, false)
   const tmpFile = path.join(process.cwd(), '.tmp-load-test.sql')
   await fs.writeFile(tmpFile, sql, 'utf-8')
   runWrangler(['d1', 'execute', dbName, '--file', tmpFile])
