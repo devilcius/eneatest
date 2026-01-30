@@ -11,9 +11,9 @@ function HomePage({ definition, activeItemCount }) {
           Solicita tu enlace personalizado para completar el test de eneagrama y descubrir tu tipo de personalidad.
         </p>
         <div className="actions">
-          <button className="primary" onClick={() => navigateTo('/admin')}>
+          <a className="primary button-link" href="/admin">
             Ir al panel de administración
-          </button>
+          </a>
         </div>
       </div>
       <div className="hero-card">

@@ -7,9 +7,9 @@ function TopBar() {
         ENEATest
       </button>
       <div className="top-actions">
-        <button className="ghost" onClick={() => navigateTo('/admin')}>
+        <a className="ghost button-link" href="/admin">
           Admin
-        </button>
+        </a>
       </div>
     </header>
   )

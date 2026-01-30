@@ -85,9 +85,9 @@ function AdminPage({
       )}
 
       <div className="actions" style={{ marginTop: '2rem' }}>
-        <button className="ghost" onClick={() => navigateTo('/')}>
+        <a className="ghost button-link" href="/">
           Volver al inicio
-        </button>
+        </a>
       </div>
     </div>
   )
