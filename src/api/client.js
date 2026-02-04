@@ -49,6 +49,8 @@ export const api = {
     request(`/api/admin/sessions/${sessionId}/revoke`, { method: 'POST' }),
   resetSession: (sessionId) =>
     request(`/api/admin/sessions/${sessionId}/reset`, { method: 'POST' }),
+  deleteSession: (sessionId) =>
+    request(`/api/admin/sessions/${sessionId}/delete`, { method: 'POST' }),
   getSessionDetail: (sessionId) => request(`/api/admin/sessions/${sessionId}`),
   getPublicSession: (token) => request(`/api/public/session/${token}`),
   startSession: (token) => request(`/api/public/session/${token}/start`, { method: 'POST' }),

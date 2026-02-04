@@ -5,7 +5,7 @@ const STATUS_LABELS = {
   REVOKED: 'Revocada',
 }
 
-function SessionsTab({ sessions, users, onRevoke, onReset, formatDateTime }) {
+function SessionsTab({ sessions, users, onRevoke, onReset, onDelete, formatDateTime }) {
   return (
     <div className="card">
       <h3>Sesiones</h3>
@@ -46,6 +46,9 @@ function SessionsTab({ sessions, users, onRevoke, onReset, formatDateTime }) {
                         Reiniciar
                       </button>
                     )}
+                    <button className="ghost" onClick={() => onDelete(session.id)}>
+                      Eliminar
+                    </button>
                   </div>
                 </div>
               )

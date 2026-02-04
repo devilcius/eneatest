@@ -163,6 +163,17 @@ function App() {
     }
   }
 
+  const handleDeleteSession = async (sessionId) => {
+    const confirmed = window.confirm('¿Eliminar esta sesión? Esta acción no se puede deshacer.')
+    if (!confirmed) return
+    try {
+      await api.deleteSession(sessionId)
+      setAdminSessions((prev) => prev.filter((session) => session.id !== sessionId))
+    } catch (error) {
+      setAdminError(error.message)
+    }
+  }
+
   const handleUpdateItem = async (itemId, patch) => {
     try {
       const updated = await api.updateItem(itemId, patch)
@@ -243,6 +254,7 @@ function App() {
             onCreateSession={createSession}
             onRevokeSession={handleRevokeSession}
             onResetSession={handleResetSession}
+            onDeleteSession={handleDeleteSession}
             onUpdateItem={handleUpdateItem}
             formatDateTime={formatDateTime}
           />

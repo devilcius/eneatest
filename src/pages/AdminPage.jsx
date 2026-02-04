@@ -14,6 +14,7 @@ function AdminPage({
   onRevokeSession,
   onResetSession,
   onUpdateItem,
+  onDeleteSession,
   formatDateTime,
 }) {
   const [adminTab, setAdminTab] = useState('users')
@@ -75,6 +76,7 @@ function AdminPage({
           users={users}
           onRevoke={onRevokeSession}
           onReset={onResetSession}
+          onDelete={onDeleteSession}
           formatDateTime={formatDateTime}
         />
       )}
