@@ -129,51 +129,56 @@ function AdminSessionPage({ sessionDetail, testDefinition, loading, error, forma
         </div>
       </div>
 
-      <div className="card" style={{ marginBottom: '1.5rem' }}>
+      <div className="" style={{ marginBottom: '1.5rem' }}>
         {polarData.length > 0 && (
-          <div className="polar-chart">
-            <svg viewBox="0 0 360 360" role="img" aria-label="Distribución radial de puntuaciones">
-              {polarData.map((entry, index) => {
-                const cx = 180
-                const cy = 180
-                const startX = cx + entry.radius * Math.cos(entry.startAngle)
-                const startY = cy + entry.radius * Math.sin(entry.startAngle)
-                const endX = cx + entry.radius * Math.cos(entry.endAngle)
-                const endY = cy + entry.radius * Math.sin(entry.endAngle)
-                const largeArc = entry.endAngle - entry.startAngle > Math.PI ? 1 : 0
-                const path = [
-                  `M ${cx} ${cy}`,
-                  `L ${startX} ${startY}`,
-                  `A ${entry.radius} ${entry.radius} 0 ${largeArc} 1 ${endX} ${endY}`,
-                  'Z',
-                ].join(' ')
-                const labelAngle = (entry.startAngle + entry.endAngle) / 2
-                const labelRadius = entry.radius + 16
-                const labelX = cx + labelRadius * Math.cos(labelAngle)
-                const labelY = cy + labelRadius * Math.sin(labelAngle)
-                const rotate = (labelAngle * 180) / Math.PI + 90
-                return (
-                  <g key={entry.eneatype}>
-                    <path
-                      d={path}
-                      fill={polarPalette[index % polarPalette.length]}
-                      stroke="rgba(36, 26, 18, 0.4)"
-                      strokeWidth="1.5"
-                    />
-                    <text
-                      x={labelX}
-                      y={labelY}
-                      textAnchor="middle"
-                      className="polar-label"
-                      transform={`rotate(${rotate} ${labelX} ${labelY})`}
-                    >
-                      Tipo {entry.eneatype}
-                    </text>
-                  </g>
-                )
-              })}
-            </svg>
-          </div>
+          <>
+            <div className="polar-chart">
+              <svg
+                role="img"
+                aria-label="Distribución radial de puntuaciones"
+              >
+                {polarData.map((entry, index) => {
+                  const cx = 140
+                  const cy = 140
+                  const startX = cx + entry.radius * Math.cos(entry.startAngle)
+                  const startY = cy + entry.radius * Math.sin(entry.startAngle)
+                  const endX = cx + entry.radius * Math.cos(entry.endAngle)
+                  const endY = cy + entry.radius * Math.sin(entry.endAngle)
+                  const largeArc = entry.endAngle - entry.startAngle > Math.PI ? 1 : 0
+                  const path = [
+                    `M ${cx} ${cy}`,
+                    `L ${startX} ${startY}`,
+                    `A ${entry.radius} ${entry.radius} 0 ${largeArc} 1 ${endX} ${endY}`,
+                    'Z',
+                  ].join(' ')
+                  const labelAngle = (entry.startAngle + entry.endAngle) / 2
+                  const labelRadius = entry.radius + 8
+                  const labelX = cx + labelRadius * Math.cos(labelAngle)
+                  const labelY = cy + labelRadius * Math.sin(labelAngle)
+                  const rotate = (labelAngle * 180) / Math.PI + 90
+                  return (
+                    <g key={entry.eneatype}>
+                      <path
+                        d={path}
+                        fill={polarPalette[index % polarPalette.length]}
+                        stroke="rgba(36, 26, 18, 0.4)"
+                        strokeWidth="1.5"
+                      />
+                      <text
+                        x={labelX}
+                        y={labelY}
+                        textAnchor="middle"
+                        className="polar-label"
+                        transform={`rotate(${rotate} ${labelX} ${labelY})`}
+                      >
+                        Tipo {entry.eneatype}
+                      </text>
+                    </g>
+                  )
+                })}
+              </svg>
+            </div>
+          </>
         )}
 
         {result?.ranking && result.ranking.length > 0 && (

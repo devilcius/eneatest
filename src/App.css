@@ -371,7 +371,17 @@ textarea {
 .polar-chart {
   width: min(480px, 92vw);
   margin: 1rem auto 0;
+  display: flex;
+  justify-content: center;
+  
 }
+
+.polar-chart svg {
+  width: 100%;
+  height: 25rem;
+  display: block;
+}
+
 
 .polar-label {
   font-family: var(--font-body);
@@ -420,8 +430,10 @@ textarea {
 }
 
 .segmented-option input:checked + .segmented-label {
-  background: var(--accent);
-  color: white;
+  /* fill the whole background */
+  background: var(--accent);  
+  background-position: center;
+  color: white;  
 }
 
 .segmented-option input:focus-visible + .segmented-label {
